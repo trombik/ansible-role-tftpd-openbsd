@@ -1,37 +1,15 @@
 ---
 # tasks file for ansible-role-tftpd-openbsd
 
-- include_vars: "{{ ansible_os_family }}.yml"
-
-- include: "install-{{ ansible_os_family }}.yml"
-
-- name: Create log directory
-  file:
-    path: "{{ tftpd-openbsd_log_dir }}"
-    mode: 0755
-    owner: "{{ tftpd-openbsd_user }}"
-    group: "{{ tftpd-openbsd_group }}"
-    state: directory
-  notify: Restart tftpd-openbsd
-
-- name: Create db directory
-  file:
-    path: "{{ tftpd-openbsd_db_dir }}"
-    mode: 0755
-    owner: "{{ tftpd-openbsd_user }}"
-    group: "{{ tftpd-openbsd_group }}"
-    state: directory
-  notify: Restart tftpd-openbsd
-
-- name: Create tftpd-openbsd.conf
-  template:
-    src: tftpd-openbsd.conf.j2
-    dest: "{{ tftpd-openbsd_conf_file }}"
-    validate: echo %s
-  notify: Restart tftpd-openbsd
-
-- name: Start tftpd-openbsd
+- name: Set tftpd_openbsd_flags
   service:
-    name: "{{ tftpd-openbsd_service }}"
+    name: "{{ tftpd_openbsd_service }}"
+    arguments: "{{ tftpd_openbsd_flags }}"
     enabled: true
+  notify:
+    - Restart tftpd_openbsd_service
+
+- name: Start tftpd_openbsd_service
+  service:
+    name: "{{ tftpd_openbsd_service }}"
     state: started

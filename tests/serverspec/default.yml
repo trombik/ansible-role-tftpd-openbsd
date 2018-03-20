@@ -1,5 +1,11 @@
 - hosts: localhost
+  pre_tasks:
+    - name: Create /tftpboot
+      file:
+        path: /tftpboot
+        state: directory
+      changed_when: false
   roles:
     - ansible-role-tftpd-openbsd
   vars:
-    tftpd-openbsd_config: ""
+    tftpd_openbsd_flags: -v -4 /tftpboot

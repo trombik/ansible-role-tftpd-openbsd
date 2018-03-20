@@ -1,6 +1,6 @@
 # ansible-role-tftpd-openbsd
 
-A brief description of the role goes here.
+Manage `tftpd(8)` from OpenBSD
 
 # Requirements
 
@@ -8,9 +8,12 @@ None
 
 # Role Variables
 
-| variable | description | default |
+| Variable | Description | Default |
 |----------|-------------|---------|
-
+| `tftpd_openbsd_user` | | `_tftpd` |
+| `tftpd_openbsd_group` | | `_tftpd` |
+| `tftpd_openbsd_service` | | `tftpd` |
+| `tftpd_openbsd_flags` | | `""` |
 
 # Dependencies
 
@@ -19,6 +22,17 @@ None
 # Example Playbook
 
 ```yaml
+- hosts: localhost
+  pre_tasks:
+    - name: Create /tftpboot
+      file:
+        path: /tftpboot
+        state: directory
+      changed_when: false
+  roles:
+    - ansible-role-tftpd-openbsd
+  vars:
+    tftpd_openbsd_flags: -v -4 /tftpboot
 ```
 
 # License
