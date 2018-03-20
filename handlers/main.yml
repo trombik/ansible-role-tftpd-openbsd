@@ -1,0 +1,6 @@
+---
+
+- name: Restart tftpd-openbsd
+  service:
+    name: tftpd-openbsd
+    state: restarted

@@ -1,0 +1,6 @@
+---
+
+- name: Install tftpd-openbsd
+  pkgng:
+    name: tftpd-openbsd
+    state: present

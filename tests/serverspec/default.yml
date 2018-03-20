@@ -1,0 +1,5 @@
+- hosts: localhost
+  roles:
+    - ansible-role-tftpd-openbsd
+  vars:
+    tftpd-openbsd_config: ""

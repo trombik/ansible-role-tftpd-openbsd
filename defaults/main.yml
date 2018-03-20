@@ -1,0 +1,8 @@
+tftpd-openbsd_user: tftpd-openbsd
+tftpd-openbsd_group: tftpd-openbsd
+tftpd-openbsd_log_dir: /var/log/tftpd-openbsd
+tftpd-openbsd_db_dir: "{{ __tftpd-openbsd_db_dir }}"
+tftpd-openbsd_service: tftpd-openbsd
+tftpd-openbsd_conf_dir: "{{ __tftpd-openbsd_conf_dir }}"
+tftpd-openbsd_conf_file: "{{ __tftpd-openbsd_conf_dir }}/tftpd-openbsd.conf"
+tftpd-openbsd_flags: ""
