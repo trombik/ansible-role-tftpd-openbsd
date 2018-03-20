@@ -1,6 +1,6 @@
 ---
 
-- name: Restart tftpd-openbsd
+- name: Restart tftpd_openbsd_service
   service:
-    name: tftpd-openbsd
+    name: "{{ tftpd_openbsd_service }}"
     state: restarted

@@ -1,4 +1,3 @@
----
 - hosts: server
   become: yes
   become_method: sudo
@@ -6,7 +5,15 @@
     http_proxy: "{{ http_proxy | default() }}"
     https_proxy: "{{ https_proxy | default() }}"
     no_proxy: "{{ no_proxy | default() }}"
-
   pre_tasks:
+    - name: Create /tftpboot
+      file:
+        path: /tftpboot
+        state: directory
+      changed_when: false
+    - name: Create a file
+      shell: echo foo > /tftpboot/foo
   roles:
-    - tftpd-openbsd
+    - ansible-role-tftpd-openbsd
+  vars:
+    tftpd_openbsd_flags: -v -4 /tftpboot

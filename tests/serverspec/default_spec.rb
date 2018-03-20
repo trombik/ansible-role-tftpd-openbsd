@@ -1,49 +1,16 @@
 require "spec_helper"
 require "serverspec"
 
-package = "tftpd-openbsd"
-service = "tftpd-openbsd"
-config  = "/etc/tftpd-openbsd/tftpd-openbsd.conf"
-user    = "tftpd-openbsd"
-group   = "tftpd-openbsd"
-ports   = [PORTS]
-log_dir = "/var/log/tftpd-openbsd"
-db_dir  = "/var/lib/tftpd-openbsd"
+service = "tftpd"
+ports   = [69]
 
-case os[:family]
-when "freebsd"
-  config = "/usr/local/etc/tftpd-openbsd.conf"
-  db_dir = "/var/db/tftpd-openbsd"
-end
-
-describe package(package) do
-  it { should be_installed }
-end
-
-describe file(config) do
+describe file "/etc/rc.conf.local" do
+  it { should exist }
   it { should be_file }
-  its(:content) { should match Regexp.escape("tftpd-openbsd") }
-end
-
-describe file(log_dir) do
-  it { should exist }
-  it { should be_mode 755 }
-  it { should be_owned_by user }
-  it { should be_grouped_into group }
-end
-
-describe file(db_dir) do
-  it { should exist }
-  it { should be_mode 755 }
-  it { should be_owned_by user }
-  it { should be_grouped_into group }
-end
-
-case os[:family]
-when "freebsd"
-  describe file("/etc/rc.conf.d/tftpd-openbsd") do
-    it { should be_file }
-  end
+  it { should be_mode 644 }
+  it { should be_owned_by "root" }
+  it { should be_grouped_into "wheel" }
+  its(:content) { should match(%r{^tftpd_flags=-v -4 /tftpboot$}) }
 end
 
 describe service(service) do
@@ -53,6 +20,9 @@ end
 
 ports.each do |p|
   describe port(p) do
-    it { should be_listening }
+    it do
+      pending "serverspec does not support OpenBSD's netstat"
+      should be_listening
+    end
   end
 end
